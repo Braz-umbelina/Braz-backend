@@ -6,6 +6,7 @@ import {
 import logger from '../../logger.js';
 import { hasChat } from '../../Chat/services/chatCache.js';
 import { relatorioService } from '../../Relatorio/services/relatorioService.js';
+import { notificarAtualizacaoAula } from './aulaEvents.js';
 
 //-------- services
 
@@ -27,6 +28,7 @@ export const abrirAula = async (disciplinaId: string) => {
       disciplinaId,
     },
   });
+  notificarAtualizacaoAula();
   return iniciarAula;
 };
 
@@ -50,6 +52,8 @@ export const encerrarAula = async (aulaId: string) => {
       fechadaEm: new Date(),
     },
   });
+  notificarAtualizacaoAula();
+
   const alunos = await prisma.aluno.findMany();
   /*variables to store the number of generated reports and
   the number of errors encountered during generation*/
@@ -86,6 +90,7 @@ export const alterarPausa = async (aulaId: string, pausada: boolean) => {
     where: { id: aulaId },
     data: { pausada },
   });
+  notificarAtualizacaoAula();
   return pausarAula;
 };
 

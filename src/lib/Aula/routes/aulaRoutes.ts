@@ -8,10 +8,13 @@ import {
   indexAulaAtual,
   indexAula,
   indexRelatorioAula,
+  indexEventosAula,
 } from '../controller/aulaController.js';
 import { authMiddlewareProfessor } from '../../middlewares/professor/authProfessor.js';
 
 const router = Router();
+
+router.get('/eventos', indexEventosAula);
 
 router.get('/aberta', indexAulaAberta);
 
