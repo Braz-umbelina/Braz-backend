@@ -14,6 +14,7 @@ import {
   DisciplinaNaoEncontradaError,
   AulaNaoEncontradaError,
 } from '../../errors.js';
+import { conectarEventosAula } from '../services/aulaEvents.js';
 
 //------------controllers
 
@@ -202,4 +203,9 @@ export const indexRelatorioAula = async (req: Request, res: Response) => {
     logger.error(error);
   }
   return res.status(500).json({ error: 'Erro ao processar solicitação' });
+};
+
+/* Keeps an SSE connection open so the chat can refresh the class state on connection and whenever a class opens, closes, pauses, or resumes */
+export const indexEventosAula = (_req: Request, res: Response) => {
+  conectarEventosAula(res);
 };
