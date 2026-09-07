@@ -141,9 +141,13 @@ export const indexAulaAtual = async (req: Request, res: Response) => {
   return res.status(500).json({ error: 'Erro ao processar solicitação' });
 };
 
-export const indexAula = async (_req: Request, res: Response) => {
+export const indexAula = async (req: Request, res: Response) => {
   try {
-    const aula = await getAula();
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    const aula = await getAula(professorId);
     return res.status(200).json(aula);
   } catch (error) {
     logger.error(error);

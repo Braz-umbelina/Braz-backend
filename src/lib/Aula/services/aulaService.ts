@@ -121,8 +121,9 @@ export const getAulaAbertaDoProfessor = async (professorId: string) => {
   return aulaAberta;
 };
 
-export const getAula = async () => {
+export const getAula = async (professorId: string) => {
   const aulas = await prisma.aula.findMany({
+    where: { disciplina: { professorId } },
     select: {
       id: true,
       disciplina: {
