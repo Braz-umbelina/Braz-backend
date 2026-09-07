@@ -9,7 +9,12 @@ export const conectarEventosAula = (res: Response) => {
 
   clientes.add(res);
   res.write('event: aula-atualizada\ndata: {}\n\n');
+  const heartbeat = setInterval(() => {
+    res.write(': ping\n\n');
+  }, 25000);
+
   res.on('close', () => {
+    clearInterval(heartbeat);
     clientes.delete(res);
   });
 };
