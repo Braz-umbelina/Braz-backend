@@ -5,6 +5,7 @@ import {
   encerrarAula,
   alterarPausa,
   getAulaAberta,
+  getAulaAbertaDoProfessor,
   getAula,
 } from '../services/aulaService.js';
 import { getRelatorios } from '../../Relatorio/services/relatorioService.js';
@@ -117,9 +118,13 @@ export const indexAulaAberta = async (_req: Request, res: Response) => {
   return res.status(500).json({ error: 'Erro ao processar solicitação' });
 };
 
-export const indexAulaAtual = async (_req: Request, res: Response) => {
+export const indexAulaAtual = async (req: Request, res: Response) => {
   try {
-    const aula = await getAulaAberta();
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    const aula = await getAulaAbertaDoProfessor(professorId);
     if (!aula) {
       return res.status(200).json(null);
     }

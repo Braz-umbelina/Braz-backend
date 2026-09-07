@@ -101,11 +101,23 @@ export const getAulaAberta = async () => {
       },
     },
   });
-
   if (!aulaAberta) {
     return null;
   }
   logger.info(`Aula aberta encontrada: ${aulaAberta.id}`);
+  return aulaAberta;
+};
+
+export const getAulaAbertaDoProfessor = async (professorId: string) => {
+  const aulaAberta = await prisma.aula.findFirst({
+    where: {
+      fechadaEm: null,
+      disciplina: { professorId },
+    },
+    include: {
+      disciplina: { select: { nome: true } },
+    },
+  });
   return aulaAberta;
 };
 
