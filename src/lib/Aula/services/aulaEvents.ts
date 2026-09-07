@@ -5,6 +5,7 @@ const clientes = new Set<Response>();
 export const conectarEventosAula = (res: Response) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('X-Accel-Buffering', 'no');
   res.flushHeaders();
 
   clientes.add(res);

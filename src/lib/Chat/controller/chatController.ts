@@ -6,11 +6,13 @@ import {
   AulaNaoEncontradaError,
   AulaPausadaError,
 } from '../../errors.js';
+import { ApiError } from '@google/genai';
 
 //--------------- controller
 
 export const storeChat = async (req: Request, res: Response) => {
   try {
+    //logger.info('POST /chat chegou ao controller');
     const alunoId = req.aluno?.id;
     if (!alunoId) {
       return res.status(404).json('Id do aluno não fornecido');
@@ -23,6 +25,12 @@ export const storeChat = async (req: Request, res: Response) => {
     return res.status(200).json(result);
   } catch (error) {
     logger.error(error);
+    if (error instanceof ApiError && error.status === 503) {
+      return res.status(503).json({
+        error:
+          'O Braz está sobrecarregado neste momento. Tente de novo em instantes.',
+      });
+    }
     if (error instanceof AulaPausadaError) {
       return res.status(403).json({ error: error.message });
     }

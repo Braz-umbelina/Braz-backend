@@ -13,6 +13,7 @@ The globalLimiter catches external bots; since they have their own IPs, they end
 export const globalLimiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 100,
+  //passOnStoreError: true,
   standardHeaders: true, //sends RateLimit-* headers new standard
   legacyHeaders: false, // disables X-RateLimit-* old standard
   store: criarStore('limiter:global:'),
