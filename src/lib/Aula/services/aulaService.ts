@@ -137,3 +137,14 @@ export const getAula = async (professorId: string) => {
   });
   return aulas;
 };
+
+export const aulaPertenceAoProfessor = async (
+  aulaId: string,
+  professorId: string,
+) => {
+  const aula = await prisma.aula.findFirst({
+    where: { id: aulaId, disciplina: { professorId } },
+    select: { id: true },
+  });
+  return aula !== null;
+};

@@ -7,6 +7,7 @@ import {
   getAulaAberta,
   getAulaAbertaDoProfessor,
   getAula,
+  aulaPertenceAoProfessor,
 } from '../services/aulaService.js';
 import { getRelatorios } from '../../Relatorio/services/relatorioService.js';
 import {
@@ -45,6 +46,13 @@ export const storeFecharAula = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: 'O id da aula deve ser uma string' });
     }
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    if (!(await aulaPertenceAoProfessor(aulaId, professorId))) {
+      return res.status(404).json({ error: 'Aula não encontrada' });
+    }
     const fecharAula = await encerrarAula(aulaId);
     return res.status(200).json(fecharAula);
   } catch (error) {
@@ -66,6 +74,13 @@ export const storePausarAula = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ error: 'O id da aula deve ser uma string' });
+    }
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    if (!(await aulaPertenceAoProfessor(aulaId, professorId))) {
+      return res.status(404).json({ error: 'Aula não encontrada' });
     }
     const result = await alterarPausa(aulaId, true);
     return res.status(200).json(result);
@@ -89,6 +104,13 @@ export const storeDespausarAula = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: 'O id da aula deve ser uma string' });
     }
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    if (!(await aulaPertenceAoProfessor(aulaId, professorId))) {
+      return res.status(404).json({ error: 'Aula não encontrada' });
+    }
     const result = await alterarPausa(aulaId, false);
     return res.status(200).json(result);
   } catch (error) {
@@ -106,6 +128,7 @@ export const indexAulaAberta = async (_req: Request, res: Response) => {
     if (!aula) {
       return res.status(200).json(null);
     }
+
     const result = {
       disciplina: aula.disciplina.nome,
       pausada: aula.pausada,
@@ -154,6 +177,7 @@ export const indexAula = async (req: Request, res: Response) => {
   }
   return res.status(500).json({ error: 'Erro ao processar solicitação' });
 };
+
 export const indexRelatorioAula = async (req: Request, res: Response) => {
   try {
     const aulaId = req.params.aulaId;
@@ -164,6 +188,13 @@ export const indexRelatorioAula = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ error: 'O id da aula deve ser uma string.' });
+    }
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    if (!(await aulaPertenceAoProfessor(aulaId, professorId))) {
+      return res.status(404).json({ error: 'Aula não encontrada' });
     }
     const relatorio = await getRelatorios(aulaId);
     return res.status(200).json(relatorio);
