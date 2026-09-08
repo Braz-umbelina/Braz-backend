@@ -37,7 +37,11 @@ export const chatService = async (params: {
   const response = await genAI.models.generateContent({
     model: 'gemini-3.8-flash',
     config: {
-      systemInstruction: promptBraz(aulaAberta.disciplina.nome, aluno.nome),
+      systemInstruction: promptBraz(
+        aulaAberta.disciplina.nome,
+        aluno.nome,
+        aulaAberta.disciplina.professor.nome,
+      ),
     },
     contents: [
       ...history.slice(-20).map((msg: { role: string; text: string }) => ({
