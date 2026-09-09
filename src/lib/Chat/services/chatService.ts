@@ -31,6 +31,7 @@ export const chatService = async (params: {
   if (!aluno) {
     throw new AlunoNaoEncontradoError('Aluno não encontrado');
   }
+  const primeiroNome = aluno.nome.split(' ')[0] ?? aluno.nome;
 
   const history = await getChat(aulaAberta.id, aluno.id);
 
@@ -39,7 +40,7 @@ export const chatService = async (params: {
     config: {
       systemInstruction: promptBraz(
         aulaAberta.disciplina.nome,
-        aluno.nome,
+        primeiroNome,
         aulaAberta.disciplina.professor.nome,
       ),
     },
