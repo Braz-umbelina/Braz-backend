@@ -35,7 +35,7 @@ export const chatService = async (params: {
   const history = await getChat(aulaAberta.id, aluno.id);
 
   const response = await genAI.models.generateContent({
-    model: 'gemini-3.8-flash',
+    model: 'gemini-3.1-flash-lite',
     config: {
       systemInstruction: promptBraz(
         aulaAberta.disciplina.nome,
