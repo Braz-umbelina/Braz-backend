@@ -4,6 +4,7 @@ import {
   storeFecharAula,
   storePausarAula,
   storeDespausarAula,
+  storeRelatoriosPendentes,
   indexAulaAberta,
   indexAulaAtual,
   indexAula,
@@ -29,6 +30,8 @@ router.post('/fechar/:aulaId', storeFecharAula);
 router.post('/pausar/:aulaId', storePausarAula);
 
 router.post('/despausar/:aulaId', storeDespausarAula);
+
+router.post('/gerar-relatorio/:aulaId', storeRelatoriosPendentes);
 
 router.get('/relatorio/:aulaId', indexRelatorioAula);
 

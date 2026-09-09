@@ -7,9 +7,10 @@ import {
   RelatorioNaoEncontradoError,
   RelatorioInvalidoError,
 } from '../../errors.js';
-import { getChat, deleteChat } from '../../Chat/services/chatCache.js';
+import { getChat, deleteChat, hasChat } from '../../Chat/services/chatCache.js';
 import { genAI } from '../../Gemini/client.js';
 import { relatorioSchema } from '../schemas/relatorioSchema.js';
+import logger from '../../logger.js';
 
 //------------ services
 
@@ -42,8 +43,9 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
     )
     .join('\n');
 
+  const inicio = Date.now();
   const response = await genAI.models.generateContent({
-    model: 'gemini-3.5-flash-lite',
+    model: 'gemini-3.1-flash-lite',
     config: {
       systemInstruction: promptRelatorio(aula.disciplina.nome, aluno.nome),
       responseMimeType: 'application/json',
@@ -64,6 +66,7 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
       },
     ],
   });
+  logger.info(`Gemini: ${Date.now() - inicio}ms para ${aluno.nome}`);
   if (!response.text) {
     throw new RelatorioNaoEncontradoError('Relatório não gerado');
   }
@@ -73,8 +76,12 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
     throw new RelatorioInvalidoError('Relatório não gerado');
   }
 
-  const createRelatorio = await prisma.relatorio.create({
-    data: {
+  const createRelatorio = await prisma.relatorio.upsert({
+    where: { aulaId_alunoId: { aulaId, alunoId } },
+    update: {
+      ...validRelatorio.data,
+    },
+    create: {
       ...validRelatorio.data,
       aulaId,
       alunoId,
@@ -85,6 +92,29 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
   await deleteChat(aulaId, alunoId);
 
   return createRelatorio;
+};
+
+export const gerarRelatoriosPendentes = async (aulaId: string) => {
+  const alunos = await prisma.aluno.findMany();
+  /*variables to store the number of generated reports and
+  the number of errors encountered during generation*/
+  let gerados = 0;
+  let falhas = 0;
+
+  for (const aluno of alunos) {
+    const temConversa = await hasChat(aulaId, aluno.id); //check which students talked during class
+    if (!temConversa) {
+      continue;
+    }
+    try {
+      await relatorioService(aulaId, aluno.id);
+      gerados++;
+    } catch (error) {
+      logger.error(error, `Falha ao gerar relatório de ${aluno.nome}`);
+      falhas++;
+    }
+  }
+  return { gerados, falhas };
 };
 
 export const getRelatorios = async (aulaId: string) => {

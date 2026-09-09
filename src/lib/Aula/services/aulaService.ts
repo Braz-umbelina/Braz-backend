@@ -4,8 +4,7 @@ import {
   AulaNaoEncontradaError,
 } from '../../errors.js';
 import logger from '../../logger.js';
-import { hasChat } from '../../Chat/services/chatCache.js';
-import { relatorioService } from '../../Relatorio/services/relatorioService.js';
+import { gerarRelatoriosPendentes } from '../../Relatorio/services/relatorioService.js';
 import { notificarAtualizacaoAula } from './aulaEvents.js';
 
 //-------- services
@@ -53,27 +52,7 @@ export const encerrarAula = async (aulaId: string) => {
     },
   });
   notificarAtualizacaoAula();
-
-  const alunos = await prisma.aluno.findMany();
-  /*variables to store the number of generated reports and
-  the number of errors encountered during generation*/
-  let gerados = 0;
-  let falhas = 0;
-
-  for (const aluno of alunos) {
-    const temConversa = await hasChat(aulaId, aluno.id); //check which students talked during class
-    if (!temConversa) {
-      continue;
-    }
-    try {
-      await relatorioService(aulaId, aluno.id);
-      gerados++;
-    } catch (error) {
-      logger.error(error, `Falha ao gerar relatório de ${aluno.nome}`);
-      falhas++;
-    }
-  }
-  return { gerados, falhas };
+  return await gerarRelatoriosPendentes(aulaId);
 };
 
 export const alterarPausa = async (aulaId: string, pausada: boolean) => {

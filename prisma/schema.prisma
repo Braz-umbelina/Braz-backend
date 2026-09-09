@@ -67,6 +67,8 @@ model Relatorio {
   aula        Aula         @relation(fields: [aulaId], references: [id])
   alunoId     String
   aluno       Aluno        @relation(fields: [alunoId], references: [id])
+
+  @@unique([aulaId, alunoId])
 }
 
 model RegistroExclusao {

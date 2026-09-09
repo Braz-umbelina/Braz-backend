@@ -9,7 +9,10 @@ import {
   getAula,
   aulaPertenceAoProfessor,
 } from '../services/aulaService.js';
-import { getRelatorios } from '../../Relatorio/services/relatorioService.js';
+import {
+  gerarRelatoriosPendentes,
+  getRelatorios,
+} from '../../Relatorio/services/relatorioService.js';
 import {
   DisciplinaNaoEncontradaError,
   AulaNaoEncontradaError,
@@ -119,6 +122,33 @@ export const storeDespausarAula = async (req: Request, res: Response) => {
     if (error instanceof AulaNaoEncontradaError) {
       return res.status(404).json({ error: error.message });
     }
+  }
+  return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+};
+
+export const storeRelatoriosPendentes = async (req: Request, res: Response) => {
+  try {
+    const aulaId = req.params.aulaId;
+    if (!aulaId) {
+      return res.status(400).json({ error: 'Id da aula não informado' });
+    }
+    //Express 5 types params as string | string[]
+    if (typeof aulaId !== 'string') {
+      return res
+        .status(400)
+        .json({ error: 'O id da aula deve ser uma string' });
+    }
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    if (!(await aulaPertenceAoProfessor(aulaId, professorId))) {
+      return res.status(404).json({ error: 'Aula não encontrada' });
+    }
+    const gerar = await gerarRelatoriosPendentes(aulaId);
+    return res.status(200).json(gerar);
+  } catch (error) {
+    logger.error(error);
   }
   return res.status(500).json({ error: 'Erro ao processar a solicitação' });
 };
