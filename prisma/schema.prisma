@@ -54,6 +54,7 @@ model Aula {
   abertaEm     DateTime    @default(now())
   pausada      Boolean     @default(false)
   fechadaEm    DateTime?
+  pendentes    Int         @default(0)
   relatorios   Relatorio[]
 }
 

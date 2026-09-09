@@ -114,6 +114,13 @@ export const gerarRelatoriosPendentes = async (aulaId: string) => {
       falhas++;
     }
   }
+  /* always written, not only when something failed, a successful retry has to clear
+  the mark, otherwise the icon would stay on a class that is already complete. */
+  await prisma.aula.update({
+    where: { id: aulaId },
+    data: { pendentes: falhas },
+  });
+
   return { gerados, falhas };
 };
 

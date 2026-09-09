@@ -115,6 +115,7 @@ export const getAula = async (professorId: string) => {
       },
       abertaEm: true,
       fechadaEm: true,
+      pendentes: true,
     },
     orderBy: { abertaEm: 'desc' },
     take: 15,
