@@ -31,6 +31,12 @@ export const storeChat = async (req: Request, res: Response) => {
           'O Braz está sobrecarregado neste momento. Tente de novo em instantes.',
       });
     }
+    if (error instanceof ApiError && error.status === 429) {
+      return res.status(429).json({
+        error:
+          'Muitos alunos perguntando ao mesmo tempo. Tente de novo em alguns segundos.',
+      });
+    }
     if (error instanceof AulaPausadaError) {
       return res.status(403).json({ error: error.message });
     }

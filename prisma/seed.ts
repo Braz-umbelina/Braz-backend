@@ -19,7 +19,6 @@ const alunoSchema = z.object({
   nome: z.string().min(3),
   email: z.string().email(),
   senha: z.string().min(6),
-  codigo: z.string(),
 });
 
 // Seed the professores
@@ -123,7 +122,7 @@ async function seedAluno() {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      logger.error('Erro de validação do zod:');
+      logger.error('Erro de validaçao do zod:');
     } else {
       logger.error('Erro ao criar o usuário:');
     }
