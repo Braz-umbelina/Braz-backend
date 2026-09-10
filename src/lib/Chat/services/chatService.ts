@@ -7,7 +7,7 @@ import {
   RespostaVaziaError,
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
-import { deepSeek } from '../../Gemini/client.js';
+import { deepSeek } from '../../IA-Models/client.js';
 import { getAulaAberta } from '../../Aula/services/aulaService.js';
 
 //-------- service

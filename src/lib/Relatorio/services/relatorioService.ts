@@ -8,7 +8,7 @@ import {
   RelatorioInvalidoError,
 } from '../../errors.js';
 import { getChat, deleteChat, hasChat } from '../../Chat/services/chatCache.js';
-import { deepSeek } from '../../Gemini/client.js';
+import { deepSeek } from '../../IA-Models/client.js';
 import { relatorioSchema } from '../schemas/relatorioSchema.js';
 import logger from '../../logger.js';
 
