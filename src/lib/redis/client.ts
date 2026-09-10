@@ -16,7 +16,7 @@ client.on('error', (error) => {
 });
 
 client.on('ready', () => {
-  logger.info('Redis pronto');
+  logger.info('Redis conectado');
 });
 
 client.on('reconnecting', () => {
