@@ -4,9 +4,10 @@ import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
   AulaPausadaError,
+  RespostaVaziaError,
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
-import { genAI } from '../../Gemini/client.js';
+import { deepSeek } from '../../Gemini/client.js';
 import { getAulaAberta } from '../../Aula/services/aulaService.js';
 
 //-------- service
@@ -35,28 +36,36 @@ export const chatService = async (params: {
 
   const history = await getChat(aulaAberta.id, aluno.id);
 
-  const response = await genAI.models.generateContent({
-    model: 'gemini-3.1-flash-lite',
-    config: {
-      systemInstruction: promptBraz(
-        aulaAberta.disciplina.nome,
-        primeiroNome,
-        aulaAberta.disciplina.professor.nome,
-      ),
-    },
-    contents: [
+  const response = await deepSeek.chat.completions.create({
+    model: 'deepseek-v4-flash',
+    reasoning_effort: 'high',
+    messages: [
+      {
+        role: 'system',
+        content: promptBraz(
+          aulaAberta.disciplina.nome,
+          primeiroNome,
+          aulaAberta.disciplina.professor.nome,
+        ),
+      },
       ...history.slice(-20).map((msg: { role: string; text: string }) => ({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.text }],
+        role: (msg.role === 'user' ? 'user' : 'assistant') as
+          'user' | 'assistant',
+        content: msg.text,
       })),
-      { role: 'user', parts: [{ text: params.messages }] },
+      { role: 'user', content: params.messages },
     ],
   });
-
+  const texto = response.choices[0]?.message?.content;
+  if (!texto) {
+    throw new RespostaVaziaError(
+      'O Braz não conseguiu responder. Tente enviar de novo.',
+    );
+  }
   await setChat(aulaAberta.id, aluno.id, 'user', params.messages);
-  await setChat(aulaAberta.id, aluno.id, 'model', response.text ?? '');
+  await setChat(aulaAberta.id, aluno.id, 'model', texto);
 
-  return response.text;
+  return texto;
 };
 
 export const getChatAberto = async (alunoId: string) => {

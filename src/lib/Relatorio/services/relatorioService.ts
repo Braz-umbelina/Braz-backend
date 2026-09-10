@@ -8,7 +8,7 @@ import {
   RelatorioInvalidoError,
 } from '../../errors.js';
 import { getChat, deleteChat, hasChat } from '../../Chat/services/chatCache.js';
-import { genAI } from '../../Gemini/client.js';
+import { deepSeek } from '../../Gemini/client.js';
 import { relatorioSchema } from '../schemas/relatorioSchema.js';
 import logger from '../../logger.js';
 
@@ -44,33 +44,37 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
     .join('\n');
 
   const inicio = Date.now();
-  const response = await genAI.models.generateContent({
-    model: 'gemini-3.1-flash-lite',
-    config: {
-      systemInstruction: promptRelatorio(aula.disciplina.nome, aluno.nome),
-      responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'OBJECT',
-        properties: {
-          temas: { type: 'ARRAY', items: { type: 'STRING' } },
-          esclarecida: { type: 'STRING', enum: ['SIM', 'PARCIAL', 'NAO'] },
-          observacoes: { type: 'STRING' },
-        },
-        required: ['temas', 'esclarecida', 'observacoes'],
+  const response = await deepSeek.chat.completions.create({
+    model: 'deepseek-v4-flash',
+    response_format: { type: 'json_object' },
+    reasoning_effort: 'low',
+    /* without a ceiling the model can be cut mid object and the JSON.parse below
+    throws on a string that is valid until the truncation point. */
+    max_tokens: 800,
+    messages: [
+      {
+        role: 'system',
+        content: promptRelatorio(aula.disciplina.nome, aluno.nome),
       },
-    },
-    contents: [
       {
         role: 'user',
-        parts: [{ text: `<conversa>\n${transcricao}\n</conversa>` }],
+        content: `<conversa>\n${transcricao}\n</conversa>`,
       },
     ],
   });
-  logger.info(`Gemini: ${Date.now() - inicio}ms para ${aluno.nome}`);
-  if (!response.text) {
+  logger.info(`DeepSeek: ${Date.now() - inicio}ms para ${aluno.nome}`);
+
+  const texto = response.choices[0]?.message?.content;
+  if (!texto) {
     throw new RelatorioNaoEncontradoError('Relatório não gerado');
   }
-  const relatorio = JSON.parse(response.text);
+  let relatorio: unknown;
+  try {
+    relatorio = JSON.parse(texto);
+  } catch {
+    throw new RelatorioInvalidoError('Relatório não gerado');
+  }
+
   const validRelatorio = relatorioSchema.safeParse(relatorio);
   if (!validRelatorio.success) {
     throw new RelatorioInvalidoError('Relatório não gerado');

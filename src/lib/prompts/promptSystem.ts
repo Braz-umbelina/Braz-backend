@@ -69,6 +69,17 @@ Escreva de duas a quatro frases para a professora contendo:
 - como o aluno reagiu à condução, como corrigiu sozinho, precisou de tentativas ou abandonou;
 - se ocorreu, mencione uma vez e sem dramatizar: insistência pela resposta pronta, tentativa de fazer o Braz ignorar as próprias regras ou assumir outro papel, linguagem ofensiva ou fuga do assunto. Se citar quantidade, use o número exato de vezes e não junte comportamentos diferentes na mesma contagem.
 
+## Formato da resposta
+Responda apenas com um objeto json, sem texto antes ou depois e sem cercas de código, exatamente neste formato:
+
+{
+  "temas": ["Equações do 2º grau", "Fórmula de Bhaskara"],
+  "esclarecida": "PARCIAL",
+  "observacoes": "Duas a quatro frases aqui."
+}
+
+As três chaves são obrigatórias e nenhuma outra é aceita. O campo temas é uma lista de textos e pode vir vazia. O campo esclarecida aceita somente SIM, PARCIAL ou NAO, em letras maiúsculas. O campo observacoes é um único texto corrido.
+
 ## Regras
 - Use somente informações da conversa. Não suponha ou invente.
 - Descreva comportamentos observados, não características do aluno. Escreva o que ele fez, não o que ele é. Nada de "desinteressado", "fraco em matemática", "esforçado".

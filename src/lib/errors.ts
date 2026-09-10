@@ -16,3 +16,4 @@ export class CodigoInvalidoError extends Error {}
 export class EmailNaoVerificadoError extends Error {}
 export class EmailVerificadoError extends Error {}
 export class EmailJaCadastradoError extends Error {}
+export class RespostaVaziaError extends Error {}

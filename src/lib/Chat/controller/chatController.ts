@@ -5,8 +5,9 @@ import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
   AulaPausadaError,
+  RespostaVaziaError,
 } from '../../errors.js';
-import { ApiError } from '@google/genai';
+import OpenAI from 'openai';
 
 //--------------- controller
 
@@ -25,17 +26,29 @@ export const storeChat = async (req: Request, res: Response) => {
     return res.status(200).json(result);
   } catch (error) {
     logger.error(error);
-    if (error instanceof ApiError && error.status === 503) {
-      return res.status(503).json({
-        error:
-          'O Braz está sobrecarregado neste momento. Tente de novo em instantes.',
-      });
+    if (error instanceof OpenAI.APIError) {
+      if (error.status === 503 || error.status === 500) {
+        return res.status(503).json({
+          error:
+            'O Braz está sobrecarregado neste momento. Tente de novo em instantes.',
+        });
+      }
+      if (error.status === 429) {
+        return res.status(429).json({
+          error:
+            'Muitos alunos perguntando ao mesmo tempo. Tente de novo em alguns segundos.',
+        });
+      }
+      /* Out of credit. The student cannot do anything about this one, so the message
+      points at the only person in the room who can. */
+      if (error.status === 402) {
+        return res.status(503).json({
+          error: 'O Braz está indisponível agora. Avise a professora.',
+        });
+      }
     }
-    if (error instanceof ApiError && error.status === 429) {
-      return res.status(429).json({
-        error:
-          'Muitos alunos perguntando ao mesmo tempo. Tente de novo em alguns segundos.',
-      });
+    if (error instanceof RespostaVaziaError) {
+      return res.status(502).json({ error: error.message });
     }
     if (error instanceof AulaPausadaError) {
       return res.status(403).json({ error: error.message });
