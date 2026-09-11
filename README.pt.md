@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"/>
   <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white"/>
   <img src="https://img.shields.io/badge/Zod-3E6B9E?style=for-the-badge&logo=zod&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white"/>
+  <img src="https://img.shields.io/badge/DeepSeek-4D6BFF?style=for-the-badge&logo=deepseek&logoColor=white"/>
   <img src="https://img.shields.io/badge/Brevo-0B996E?style=for-the-badge&logo=brevo&logoColor=white"/>
   <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white"/>
   <img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black"/>
@@ -43,7 +43,7 @@ Repositório do frontend: [Braz-chat](https://github.com/Geovanni-dev/Braz-chat)
 | Conversa         | Redis (chaves com expiração própria)    |
 | Autenticação     | JSON Web Token (JWT)                    |
 | Validação        | Zod                                     |
-| IA               | Google Gemini (`@google/genai`)         |
+| IA               | DeepSeek (SDK `openai`, compatível com OpenAI) |
 | E-mail           | API da Brevo                            |
 | Tempo real       | Server Sent Events (nativo)             |
 | Segurança        | bcrypt + express-rate-limit + Redis     |
@@ -70,7 +70,7 @@ Braz-extensionista-II/
 │   │   ├── Chat/                 # Conversa do aluno e o cache dela no Redis
 │   │   ├── Professor/            # Lista pública de professoras e login por chave
 │   │   ├── Relatorio/            # Geração e recuperação de relatórios
-│   │   ├── Gemini/client.ts      # Cliente do SDK do Gemini
+│   │   ├── IA-Models/client.ts   # Cliente do DeepSeek (SDK compatível com OpenAI)
 │   │   ├── prompts/              # Prompts do chat e do relatório
 │   │   ├── middlewares/          # Autenticação por papel e limite de requisições
 │   │   ├── config/env.ts         # Ambiente validado com Zod na subida
@@ -182,7 +182,7 @@ Contato para pedidos sobre dados: `projetobraz.umbelina@gmail.com`
 - Node.js 20 ou mais novo
 - Um banco PostgreSQL
 - Uma instância Redis
-- Uma chave da API do Google Gemini
+- Uma chave da API do DeepSeek
 - Uma conta na Brevo para e-mail transacional
 
 ### Passos
@@ -211,14 +211,14 @@ yarn dev
 | ---------------- | ------------------------------------------------------------------ |
 | `DATABASE_URL`   | String de conexão do PostgreSQL                                     |
 | `REDIS_URL`      | String de conexão do Redis                                          |
-| `GEMINI_API_KEY` | Chave do Google Gemini. **Use o plano pago**, veja a nota abaixo     |
+| `DEEPSEEK_API_KEY` | Chave da API do DeepSeek                                          |
 | `JWT_SECRET`     | Segredo usado para assinar os tokens                                |
 | `CODIGO_TURMA`   | Código da turma que o aluno digita no cadastro                      |
 | `BREVO_EMAIL`    | Remetente do e-mail transacional                                    |
 | `BREVO_API_KEY`  | Chave da API da Brevo                                               |
 | `CLIENT_URL`     | Origens permitidas no CORS, separadas por vírgula                   |
 
-> ⚠️ A política de privacidade afirma que o plano pago do Gemini é usado, e que os termos do Google preveem que o conteúdo não é usado para melhorar seus produtos e modelos. Rodar produção no plano gratuito tornaria essa afirmação falsa.
+> ⚠️ As conversas são enviadas para a API do DeepSeek para processamento, que armazena e processa os dados na China. Um pedido de opt-out do uso para treino foi enviado em 11 de setembro de 2026 e aguarda confirmação; a política de privacidade já reflete isso e deve ser atualizada assim que o DeepSeek confirmar.
 
 O `PORT` é injetado pela hospedagem e não deve ser definido na mão.
 
@@ -240,4 +240,4 @@ Comando de start: `yarn start`
 
 ## 📄 Licença
 
-**MIT © Geovani Eterno Rodrigues**
+**[MIT](./LICENSE) © Geovani Eterno Rodrigues**

@@ -37,8 +37,8 @@ export const chatService = async (params: {
   const history = await getChat(aulaAberta.id, aluno.id);
 
   const response = await deepSeek.chat.completions.create({
-    model: 'deepseek-v4-flash',
-    reasoning_effort: 'high',
+    model: 'deepseek-flash',
+    reasoning_effort: 'low',
     messages: [
       {
         role: 'system',

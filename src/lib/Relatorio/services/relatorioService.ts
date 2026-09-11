@@ -45,13 +45,10 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
 
   const inicio = Date.now();
   const response = await deepSeek.chat.completions.create({
-    model: 'deepseek-v4-flash',
+    model: 'deepseek-flash',
     response_format: { type: 'json_object' },
-    /* Thinking off. On this model the reasoning tokens are spent against max_tokens,
-    so a long deliberation burns the budget and the answer arrives empty: fourteen of
-    eighteen reports died that way on the first load test, and the three that survived
-    were the three fastest ones. Writing a report is extraction, not deliberation. */
-    // @ts-expect-error field only DeepSeek accepts, absent from the OpenAI types
+    /* Thinking about it. in this model, reasoning tokens count towards the max_tokens limit, so a lengthy deliberation consumes the entire budget before the response is even written, resulting in an empty output. */
+    // @ts-expect-error field accepted only by DeepSeek; it does not exist in the OpenAI types
     thinking: { type: 'disabled' },
     /* without a ceiling the model can be cut mid object and the JSON.parse below
     throws on a string that is valid until the truncation point. */

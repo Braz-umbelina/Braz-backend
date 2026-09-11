@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"/>
   <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=json-web-tokens&logoColor=white"/>
   <img src="https://img.shields.io/badge/Zod-3E6B9E?style=for-the-badge&logo=zod&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white"/>
+  <img src="https://img.shields.io/badge/DeepSeek-4D6BFF?style=for-the-badge&logo=deepseek&logoColor=white"/>
   <img src="https://img.shields.io/badge/Brevo-0B996E?style=for-the-badge&logo=brevo&logoColor=white"/>
   <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white"/>
   <img src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black"/>
@@ -43,7 +43,7 @@ Frontend repository: [Braz-chat](https://github.com/Geovanni-dev/Braz-chat)
 | Conversation     | Redis (keys expire on their own)       |
 | Authentication   | JSON Web Token (JWT)                   |
 | Validation       | Zod                                    |
-| AI               | Google Gemini (`@google/genai`)        |
+| AI               | DeepSeek (`openai` SDK, OpenAI-compatible) |
 | Email            | Brevo API                              |
 | Realtime         | Server Sent Events (native)            |
 | Security         | bcrypt + express-rate-limit + Redis    |
@@ -70,7 +70,7 @@ Braz-extensionista-II/
 │   │   ├── Chat/                 # Student conversation and its Redis cache
 │   │   ├── Professor/            # Public teacher list and key based login
 │   │   ├── Relatorio/            # Report generation and recovery
-│   │   ├── Gemini/client.ts      # Gemini SDK client
+│   │   ├── IA-Models/client.ts   # DeepSeek client (OpenAI-compatible SDK)
 │   │   ├── prompts/              # System prompts for the chat and the report
 │   │   ├── middlewares/          # Auth for each role, rate limiting
 │   │   ├── config/env.ts         # Environment validated with Zod at boot
@@ -182,7 +182,7 @@ Contact for data requests: `projetobraz.umbelina@gmail.com`
 - Node.js 20 or newer
 - A PostgreSQL database
 - A Redis instance
-- A Google Gemini API key
+- A DeepSeek API key
 - A Brevo account for transactional email
 
 ### Steps
@@ -211,14 +211,14 @@ yarn dev
 | ---------------- | ---------------------------------------------------------------- |
 | `DATABASE_URL`   | PostgreSQL connection string                                      |
 | `REDIS_URL`      | Redis connection string                                           |
-| `GEMINI_API_KEY` | Google Gemini key. **Use the paid tier**, see the note below      |
+| `DEEPSEEK_API_KEY` | DeepSeek API key                                                |
 | `JWT_SECRET`     | Secret used to sign the tokens                                    |
 | `CODIGO_TURMA`   | Class code students type when signing up                          |
 | `BREVO_EMAIL`    | Sender address for transactional email                            |
 | `BREVO_API_KEY`  | Brevo API key                                                     |
 | `CLIENT_URL`     | Allowed origins for CORS, comma separated                         |
 
-> ⚠️ The privacy policy states that the paid Gemini tier is used, under which Google's terms provide that content is not used to improve its products and models. Running production on the free tier would make that statement false.
+> ⚠️ Conversations are sent to the DeepSeek API for processing, which stores and processes data in China. An opt-out request for model-training use was sent on September 11, 2026 and is awaiting confirmation; the privacy policy reflects this and should be updated once DeepSeek confirms.
 
 `PORT` is injected by the host and must not be set by hand.
 
@@ -240,4 +240,4 @@ Start command: `yarn start`
 
 ## 📄 License
 
-**MIT © Geovani Eterno Rodrigues**
+**[MIT](./LICENSE) © Geovani Eterno Rodrigues**

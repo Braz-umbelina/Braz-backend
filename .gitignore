@@ -4,7 +4,5 @@ node_modules
 
 /generated/prisma
 
-prisma/migrations
-
 # Teste de carga descartavel, nao versionar
 scripts/testeCarga.ts
