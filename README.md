@@ -35,20 +35,20 @@ Frontend repository: [Braz-chat](https://github.com/Geovanni-dev/Braz-chat)
 
 ## 🛠 Tech Stack
 
-| Layer            | Technology                             |
-| ---------------- | -------------------------------------- |
-| Runtime          | Node.js (TypeScript, ESM)              |
-| Framework        | Express 5                              |
-| Database         | PostgreSQL + Prisma ORM                |
-| Conversation     | Redis (keys expire on their own)       |
-| Authentication   | JSON Web Token (JWT)                   |
-| Validation       | Zod                                    |
-| AI               | DeepSeek (`openai` SDK, OpenAI-compatible) |
-| Email            | Brevo API                              |
-| Realtime         | Server Sent Events (native)            |
-| Security         | bcrypt + express-rate-limit + Redis    |
-| Logging          | pino                                   |
-| Code Quality     | ESLint + Prettier + EditorConfig       |
+| Layer          | Technology                                 |
+| -------------- | ------------------------------------------ |
+| Runtime        | Node.js (TypeScript, ESM)                  |
+| Framework      | Express 5                                  |
+| Database       | PostgreSQL + Prisma ORM                    |
+| Conversation   | Redis (keys expire on their own)           |
+| Authentication | JSON Web Token (JWT)                       |
+| Validation     | Zod                                        |
+| AI             | DeepSeek (`openai` SDK, OpenAI-compatible) |
+| Email          | Brevo API                                  |
+| Realtime       | Server Sent Events (native)                |
+| Security       | bcrypt + express-rate-limit + Redis        |
+| Logging        | pino                                       |
+| Code Quality   | ESLint + Prettier + EditorConfig           |
 
 ---
 
@@ -115,45 +115,45 @@ Base URL: `/`
 
 ### Students — `/aluno`
 
-| Method | Route                 | Description                              |
-| ------ | --------------------- | ---------------------------------------- |
-| POST   | `/registro`           | Sign up with the class code               |
-| POST   | `/verificar-codigo`   | Confirm the code sent by email            |
-| POST   | `/reenviar`           | Resend the verification code              |
-| POST   | `/login`              | Sign in, returns a JWT valid for 8h       |
-| POST   | `/codigo-troca-senha` | Request a password reset code             |
-| POST   | `/trocar-senha`       | Set a new password using the code         |
+| Method | Route                 | Description                         |
+| ------ | --------------------- | ----------------------------------- |
+| POST   | `/registro`           | Sign up with the class code         |
+| POST   | `/verificar-codigo`   | Confirm the code sent by email      |
+| POST   | `/reenviar`           | Resend the verification code        |
+| POST   | `/login`              | Sign in, returns a JWT valid for 8h |
+| POST   | `/codigo-troca-senha` | Request a password reset code       |
+| POST   | `/trocar-senha`       | Set a new password using the code   |
 
-### Chat — `/chat` *(student token)*
+### Chat — `/chat` _(student token)_
 
-| Method | Route          | Description                                        |
-| ------ | -------------- | -------------------------------------------------- |
-| POST   | `/`            | Send a message and get Braz's answer                |
-| GET    | `/chat-aberto` | History of the conversation in the open class       |
+| Method | Route          | Description                                   |
+| ------ | -------------- | --------------------------------------------- |
+| POST   | `/`            | Send a message and get Braz's answer          |
+| GET    | `/chat-aberto` | History of the conversation in the open class |
 
 ### Teachers — `/professor`
 
-| Method | Route         | Description                                       |
-| ------ | ------------- | ------------------------------------------------- |
-| GET    | `/`           | Public list of teachers, feeds the login screen    |
-| POST   | `/login`      | Sign in with the access key                        |
-| GET    | `/disciplina` | Subjects taught by the signed in teacher           |
-| PATCH  | `/nome`       | Update the teacher's own name                      |
+| Method | Route         | Description                                     |
+| ------ | ------------- | ----------------------------------------------- |
+| GET    | `/`           | Public list of teachers, feeds the login screen |
+| POST   | `/login`      | Sign in with the access key                     |
+| GET    | `/disciplina` | Subjects taught by the signed in teacher        |
+| PATCH  | `/nome`       | Update the teacher's own name                   |
 
 ### Classes — `/aula`
 
-| Method | Route                       | Auth      | Description                                          |
-| ------ | --------------------------- | --------- | ---------------------------------------------------- |
-| GET    | `/eventos`                  | public    | SSE stream, announces that the class state changed    |
-| GET    | `/aberta`                   | public    | The class open right now, whoever owns it             |
-| GET    | `/atual`                    | teacher   | The signed in teacher's own open class, or null       |
-| POST   | `/abrir`                    | teacher   | Opens a class, closing any other that is open         |
-| POST   | `/fechar/:aulaId`           | teacher   | Closes and generates the reports                      |
-| POST   | `/gerar-relatorio/:aulaId`  | teacher   | Generates only the reports still missing              |
-| POST   | `/pausar/:aulaId`           | teacher   | Suspends Braz's answers without closing the class     |
-| POST   | `/despausar/:aulaId`        | teacher   | Resumes                                               |
-| GET    | `/buscar-aula`              | teacher   | Her last 15 classes, with the pending count           |
-| GET    | `/relatorio/:aulaId`        | teacher   | Reports of one class                                  |
+| Method | Route                      | Auth    | Description                                        |
+| ------ | -------------------------- | ------- | -------------------------------------------------- |
+| GET    | `/eventos`                 | public  | SSE stream, announces that the class state changed |
+| GET    | `/aberta`                  | public  | The class open right now, whoever owns it          |
+| GET    | `/atual`                   | teacher | The signed in teacher's own open class, or null    |
+| POST   | `/abrir`                   | teacher | Opens a class, closing any other that is open      |
+| POST   | `/fechar/:aulaId`          | teacher | Closes and generates the reports                   |
+| POST   | `/gerar-relatorio/:aulaId` | teacher | Generates only the reports still missing           |
+| POST   | `/pausar/:aulaId`          | teacher | Suspends Braz's answers without closing the class  |
+| POST   | `/despausar/:aulaId`       | teacher | Resumes                                            |
+| GET    | `/buscar-aula`             | teacher | Her last 15 classes, with the pending count        |
+| GET    | `/relatorio/:aulaId`       | teacher | Reports of one class                               |
 
 The SSE event carries no payload (`data: {}`). It only says that something changed, and the client fetches the state. That is what keeps the stream public without exposing anything.
 
@@ -207,16 +207,16 @@ yarn dev
 
 ### Environment variables
 
-| Variable         | Description                                                      |
-| ---------------- | ---------------------------------------------------------------- |
-| `DATABASE_URL`   | PostgreSQL connection string                                      |
-| `REDIS_URL`      | Redis connection string                                           |
-| `DEEPSEEK_API_KEY` | DeepSeek API key                                                |
-| `JWT_SECRET`     | Secret used to sign the tokens                                    |
-| `CODIGO_TURMA`   | Class code students type when signing up                          |
-| `BREVO_EMAIL`    | Sender address for transactional email                            |
-| `BREVO_API_KEY`  | Brevo API key                                                     |
-| `CLIENT_URL`     | Allowed origins for CORS, comma separated                         |
+| Variable           | Description                               |
+| ------------------ | ----------------------------------------- |
+| `DATABASE_URL`     | PostgreSQL connection string              |
+| `REDIS_URL`        | Redis connection string                   |
+| `DEEPSEEK_API_KEY` | DeepSeek API key                          |
+| `JWT_SECRET`       | Secret used to sign the tokens            |
+| `CODIGO_TURMA`     | Class code students type when signing up  |
+| `BREVO_EMAIL`      | Sender address for transactional email    |
+| `BREVO_API_KEY`    | Brevo API key                             |
+| `CLIENT_URL`       | Allowed origins for CORS, comma separated |
 
 > ⚠️ Conversations are sent to the DeepSeek API for processing, which stores and processes data in China. An opt-out request for model-training use was sent on September 11, 2026 and is awaiting confirmation; the privacy policy reflects this and should be updated once DeepSeek confirms.
 

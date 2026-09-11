@@ -35,20 +35,20 @@ Repositório do frontend: [Braz-chat](https://github.com/Geovanni-dev/Braz-chat)
 
 ## 🛠 Tecnologias
 
-| Camada           | Tecnologia                              |
-| ---------------- | --------------------------------------- |
-| Runtime          | Node.js (TypeScript, ESM)               |
-| Framework        | Express 5                               |
-| Banco de dados   | PostgreSQL + Prisma ORM                 |
-| Conversa         | Redis (chaves com expiração própria)    |
-| Autenticação     | JSON Web Token (JWT)                    |
-| Validação        | Zod                                     |
-| IA               | DeepSeek (SDK `openai`, compatível com OpenAI) |
-| E-mail           | API da Brevo                            |
-| Tempo real       | Server Sent Events (nativo)             |
-| Segurança        | bcrypt + express-rate-limit + Redis     |
-| Logs             | pino                                    |
-| Qualidade        | ESLint + Prettier + EditorConfig        |
+| Camada         | Tecnologia                                     |
+| -------------- | ---------------------------------------------- |
+| Runtime        | Node.js (TypeScript, ESM)                      |
+| Framework      | Express 5                                      |
+| Banco de dados | PostgreSQL + Prisma ORM                        |
+| Conversa       | Redis (chaves com expiração própria)           |
+| Autenticação   | JSON Web Token (JWT)                           |
+| Validação      | Zod                                            |
+| IA             | DeepSeek (SDK `openai`, compatível com OpenAI) |
+| E-mail         | API da Brevo                                   |
+| Tempo real     | Server Sent Events (nativo)                    |
+| Segurança      | bcrypt + express-rate-limit + Redis            |
+| Logs           | pino                                           |
+| Qualidade      | ESLint + Prettier + EditorConfig               |
 
 ---
 
@@ -115,45 +115,45 @@ URL base: `/`
 
 ### Alunos — `/aluno`
 
-| Método | Rota                  | Descrição                                    |
-| ------ | --------------------- | -------------------------------------------- |
-| POST   | `/registro`           | Cadastro com o código da turma                |
-| POST   | `/verificar-codigo`   | Confirma o código enviado por e-mail          |
-| POST   | `/reenviar`           | Reenvia o código de verificação               |
-| POST   | `/login`              | Entra e recebe um JWT válido por 8h           |
-| POST   | `/codigo-troca-senha` | Pede o código de troca de senha               |
-| POST   | `/trocar-senha`       | Define a nova senha usando o código           |
+| Método | Rota                  | Descrição                            |
+| ------ | --------------------- | ------------------------------------ |
+| POST   | `/registro`           | Cadastro com o código da turma       |
+| POST   | `/verificar-codigo`   | Confirma o código enviado por e-mail |
+| POST   | `/reenviar`           | Reenvia o código de verificação      |
+| POST   | `/login`              | Entra e recebe um JWT válido por 8h  |
+| POST   | `/codigo-troca-senha` | Pede o código de troca de senha      |
+| POST   | `/trocar-senha`       | Define a nova senha usando o código  |
 
-### Chat — `/chat` *(token de aluno)*
+### Chat — `/chat` _(token de aluno)_
 
-| Método | Rota           | Descrição                                          |
-| ------ | -------------- | -------------------------------------------------- |
-| POST   | `/`            | Envia uma mensagem e recebe a resposta do Braz      |
-| GET    | `/chat-aberto` | Histórico da conversa da aula aberta                |
+| Método | Rota           | Descrição                                      |
+| ------ | -------------- | ---------------------------------------------- |
+| POST   | `/`            | Envia uma mensagem e recebe a resposta do Braz |
+| GET    | `/chat-aberto` | Histórico da conversa da aula aberta           |
 
 ### Professoras — `/professor`
 
-| Método | Rota          | Descrição                                          |
-| ------ | ------------- | -------------------------------------------------- |
-| GET    | `/`           | Lista pública de professoras, alimenta o login      |
-| POST   | `/login`      | Entra com a chave de acesso                         |
-| GET    | `/disciplina` | Disciplinas da professora logada                    |
-| PATCH  | `/nome`       | Atualiza o próprio nome                             |
+| Método | Rota          | Descrição                                      |
+| ------ | ------------- | ---------------------------------------------- |
+| GET    | `/`           | Lista pública de professoras, alimenta o login |
+| POST   | `/login`      | Entra com a chave de acesso                    |
+| GET    | `/disciplina` | Disciplinas da professora logada               |
+| PATCH  | `/nome`       | Atualiza o próprio nome                        |
 
 ### Aulas — `/aula`
 
-| Método | Rota                        | Acesso     | Descrição                                            |
-| ------ | --------------------------- | ---------- | ---------------------------------------------------- |
-| GET    | `/eventos`                  | público    | Fluxo SSE, avisa que o estado da aula mudou           |
-| GET    | `/aberta`                   | público    | A aula aberta no momento, de quem for                 |
-| GET    | `/atual`                    | professora | A aula aberta dela, ou null                           |
-| POST   | `/abrir`                    | professora | Abre uma aula, encerrando qualquer outra aberta       |
-| POST   | `/fechar/:aulaId`           | professora | Encerra e gera os relatórios                          |
-| POST   | `/gerar-relatorio/:aulaId`  | professora | Gera apenas os relatórios que faltam                  |
-| POST   | `/pausar/:aulaId`           | professora | Suspende as respostas sem encerrar a aula             |
-| POST   | `/despausar/:aulaId`        | professora | Retoma                                                |
-| GET    | `/buscar-aula`              | professora | As 15 últimas aulas dela, com a contagem de pendentes |
-| GET    | `/relatorio/:aulaId`        | professora | Relatórios de uma aula                                |
+| Método | Rota                       | Acesso     | Descrição                                             |
+| ------ | -------------------------- | ---------- | ----------------------------------------------------- |
+| GET    | `/eventos`                 | público    | Fluxo SSE, avisa que o estado da aula mudou           |
+| GET    | `/aberta`                  | público    | A aula aberta no momento, de quem for                 |
+| GET    | `/atual`                   | professora | A aula aberta dela, ou null                           |
+| POST   | `/abrir`                   | professora | Abre uma aula, encerrando qualquer outra aberta       |
+| POST   | `/fechar/:aulaId`          | professora | Encerra e gera os relatórios                          |
+| POST   | `/gerar-relatorio/:aulaId` | professora | Gera apenas os relatórios que faltam                  |
+| POST   | `/pausar/:aulaId`          | professora | Suspende as respostas sem encerrar a aula             |
+| POST   | `/despausar/:aulaId`       | professora | Retoma                                                |
+| GET    | `/buscar-aula`             | professora | As 15 últimas aulas dela, com a contagem de pendentes |
+| GET    | `/relatorio/:aulaId`       | professora | Relatórios de uma aula                                |
 
 O evento do SSE não carrega dado nenhum (`data: {}`). Ele só diz que algo mudou, e o cliente busca o estado. É isso que permite manter o fluxo público sem expor nada.
 
@@ -207,16 +207,16 @@ yarn dev
 
 ### Variáveis de ambiente
 
-| Variável         | Descrição                                                          |
-| ---------------- | ------------------------------------------------------------------ |
-| `DATABASE_URL`   | String de conexão do PostgreSQL                                     |
-| `REDIS_URL`      | String de conexão do Redis                                          |
-| `DEEPSEEK_API_KEY` | Chave da API do DeepSeek                                          |
-| `JWT_SECRET`     | Segredo usado para assinar os tokens                                |
-| `CODIGO_TURMA`   | Código da turma que o aluno digita no cadastro                      |
-| `BREVO_EMAIL`    | Remetente do e-mail transacional                                    |
-| `BREVO_API_KEY`  | Chave da API da Brevo                                               |
-| `CLIENT_URL`     | Origens permitidas no CORS, separadas por vírgula                   |
+| Variável           | Descrição                                         |
+| ------------------ | ------------------------------------------------- |
+| `DATABASE_URL`     | String de conexão do PostgreSQL                   |
+| `REDIS_URL`        | String de conexão do Redis                        |
+| `DEEPSEEK_API_KEY` | Chave da API do DeepSeek                          |
+| `JWT_SECRET`       | Segredo usado para assinar os tokens              |
+| `CODIGO_TURMA`     | Código da turma que o aluno digita no cadastro    |
+| `BREVO_EMAIL`      | Remetente do e-mail transacional                  |
+| `BREVO_API_KEY`    | Chave da API da Brevo                             |
+| `CLIENT_URL`       | Origens permitidas no CORS, separadas por vírgula |
 
 > ⚠️ As conversas são enviadas para a API do DeepSeek para processamento, que armazena e processa os dados na China. Um pedido de opt-out do uso para treino foi enviado em 11 de setembro de 2026 e aguarda confirmação; a política de privacidade já reflete isso e deve ser atualizada assim que o DeepSeek confirmar.
 
