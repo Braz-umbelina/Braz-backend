@@ -54,11 +54,12 @@ export const loginLimiterAluno = rateLimit({
 
 export const envioCodigoLimiter = rateLimit({
   windowMs: 60 * 1000,
-  limit: 3,
+  limit: 1,
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:envioCodigo:'),
   keyGenerator: (req) => req.body?.email ?? ipKeyGenerator(req.ip ?? ''),
+  skipFailedRequests: true,
   message: {
     error: 'Muitas tentativas de acesso. Aguarde um minuto e tente novamente.',
   },
