@@ -85,7 +85,9 @@ export const storeLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ error: error.message });
     }
     if (error instanceof EmailNaoVerificadoError) {
-      return res.status(401).json({ error: error.message });
+      return res
+        .status(401)
+        .json({ error: error.message, codigo: 'EMAIL_NAO_VERIFICADO' });
     }
     if (error instanceof SenhaIncorretaError) {
       return res.status(401).json({ error: error.message });
