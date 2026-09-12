@@ -54,7 +54,7 @@ export const loginLimiterAluno = rateLimit({
 
 export const envioCodigoLimiter = rateLimit({
   windowMs: 60 * 1000,
-  limit: 1,
+  limit: 3,
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:envioCodigo:'),
