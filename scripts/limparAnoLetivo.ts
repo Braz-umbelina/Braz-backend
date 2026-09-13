@@ -13,21 +13,24 @@ terminal history: in January the old line no longer matches and has to be retype
     );
     process.exit(1);
   }
-  const registro = await prisma.$transaction(async (tx) => {
-    const relatorios = await tx.relatorio.deleteMany();
-    const aulas = await tx.aula.deleteMany();
-    const alunos = await tx.aluno.deleteMany();
+  const registro = await prisma.$transaction(
+    async (tx) => {
+      const relatorios = await tx.relatorio.deleteMany();
+      const aulas = await tx.aula.deleteMany();
+      const alunos = await tx.aluno.deleteMany();
 
-    const registroDeExclusao = await tx.registroExclusao.create({
-      data: {
-        tipo: 'ANUAL',
-        relatoriosExcluidos: relatorios.count,
-        aulasExcluidas: aulas.count,
-        alunosExcluidos: alunos.count,
-      },
-    });
-    return registroDeExclusao;
-  });
+      const registroDeExclusao = await tx.registroExclusao.create({
+        data: {
+          tipo: 'ANUAL',
+          relatoriosExcluidos: relatorios.count,
+          aulasExcluidas: aulas.count,
+          alunosExcluidos: alunos.count,
+        },
+      });
+      return registroDeExclusao;
+    },
+    { timeout: 20000 },
+  );
   console.log(
     `Ano letivo limpo. ${registro.relatoriosExcluidos} relatório(s), ` +
       `${registro.aulasExcluidas} aula(s) e ${registro.alunosExcluidos} aluno(s) apagados.`,
