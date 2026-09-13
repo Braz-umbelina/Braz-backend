@@ -4,5 +4,5 @@ node_modules
 
 /generated/prisma
 
-# Teste de carga descartavel, nao versionar
-scripts/testeCarga.ts
+# ORIGINAL SEED
+seed.ts
