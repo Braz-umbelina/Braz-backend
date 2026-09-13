@@ -8,7 +8,7 @@ import aulaRoutes from './lib/Aula/routes/aulaRoutes.js';
 import professorRoutes from './lib/Professor/routes/professorRoutes.js';
 import alunoRoutes from './lib/Aluno/routes/alunoRoutes.js';
 import { env } from './lib/config/env.js';
-import logger from './lib/logger.js';
+//import logger from './lib/logger.js';
 class Server {
   public app: Express;
 
@@ -19,7 +19,7 @@ class Server {
   }
 
   private middlewares(): void {
-    this.app.set('trust proxy', 1);
+    this.app.set('trust proxy', 3);
     const clientUrl = env.CLIENT_URL;
     this.app.use(
       cors({
@@ -36,12 +36,12 @@ class Server {
     this.app.use('/aula', aulaRoutes);
     this.app.use('/professor', professorRoutes);
     this.app.use('/aluno', alunoRoutes);
-    this.app.get('/', (req, res) => {
-      logger.info({
+    this.app.get('/', (_req, res) => {
+      /*logger.info({
         ip: req.ip,
         xff: req.headers['x-forwarded-for'],
         cf: req.headers['cf-connecting-ip'],
-      });
+      });*/
       res.send('Servidor subiu com sucesso');
     });
   }
