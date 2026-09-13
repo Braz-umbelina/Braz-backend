@@ -1,3 +1,5 @@
+//All data in this file is fictitious and used for illustrative purposes only.
+
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import logger from '../src/lib/logger.js';
