@@ -41,6 +41,7 @@ model Aluno {
 
 model Disciplina {
   id          String    @id @default(uuid())
+  codigo      Int       @unique
   nome        String    @unique
   professorId String
   professor   Professor @relation(fields: [professorId], references: [id])

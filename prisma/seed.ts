@@ -56,36 +56,46 @@ async function seedProfessors() {
 async function seedDisciplinas() {
   try {
     const disciplinaDates = [
-      { nome: 'Língua Portuguesa', professor: 'Meires' },
-      { nome: 'Estudo Orientado de Português', professor: 'Meires' },
-      { nome: 'Letramento Digital', professor: 'Meires' },
-
-      { nome: 'Ciências', professor: 'Ariane' },
-      { nome: 'Geografia', professor: 'Ariane' },
-
-      { nome: 'Matemática', professor: 'Weslane' },
-      { nome: 'Inglês', professor: 'Weslane' },
+      { codigo: 890, nome: 'Língua Portuguesa', professor: 'Meires' },
       {
+        codigo: 838,
+        nome: 'Estudo Orientado de Português',
+        professor: 'Meires',
+      },
+      { codigo: 766, nome: 'Letramento Digital', professor: 'Meires' },
+
+      { codigo: 290, nome: 'Ciências', professor: 'Ariane' },
+      { codigo: 888, nome: 'Geografia', professor: 'Ariane' },
+
+      { codigo: 887, nome: 'Matemática', professor: 'Weslane' },
+      { codigo: 886, nome: 'Inglês', professor: 'Weslane' },
+      {
+        codigo: 345,
         nome: 'Estudo Orientado de Matemática',
         professor: 'Weslane',
       },
-      { nome: 'Pensamento Computacional', professor: 'Weslane' },
+      { codigo: 760, nome: 'Pensamento Computacional', professor: 'Weslane' },
 
-      { nome: 'Artes', professor: 'Lucianne' },
-      { nome: 'Educação Física', professor: 'Lucianne' },
+      { codigo: 333, nome: 'Artes', professor: 'Lucianne' },
+      { codigo: 797, nome: 'Educação Física', professor: 'Lucianne' },
 
-      { nome: 'História', professor: 'Helita' },
-      { nome: 'Eletiva', professor: 'Helita' },
+      { codigo: 545, nome: 'História', professor: 'Helita' },
+      {
+        codigo: 481,
+        nome: 'Eletiva: Educação Financeira',
+        professor: 'Helita',
+      },
     ];
 
     for (const disciplina of disciplinaDates) {
       await prisma.disciplina.upsert({
-        where: { nome: disciplina.nome },
+        where: { codigo: disciplina.codigo },
         update: {
           nome: disciplina.nome,
           professor: { connect: { nome: disciplina.professor } },
         },
         create: {
+          codigo: disciplina.codigo,
           nome: disciplina.nome,
           professor: { connect: { nome: disciplina.professor } },
         },
@@ -118,13 +128,13 @@ async function seedAluno() {
       },
     });
     logger.info(
-      `Usuário criado/atualizado com sucesso: ${aluno.nome} (${aluno.email})`,
+      `Usuario criado/atualizado com sucesso: ${aluno.nome} (${aluno.email})`,
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      logger.error('Erro de validaçao do zod:');
+      logger.error('Erro de validacao do zod:');
     } else {
-      logger.error('Erro ao criar o usuário:');
+      logger.error('Erro ao criar o usuario:');
     }
   } finally {
     await prisma.$disconnect();
