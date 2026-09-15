@@ -4,11 +4,13 @@ import express, { type Express } from 'express';
 import cors from 'cors';
 import { globalLimiter } from './lib/middlewares/rate-limit/rateLimit.js';
 import chatRoutes from './lib/Chat/routes/chatRoutes.js';
+import chatProfessorRoutes from './lib/Chat/routes/chatProfessorRoutes.js';
 import aulaRoutes from './lib/Aula/routes/aulaRoutes.js';
 import professorRoutes from './lib/Professor/routes/professorRoutes.js';
 import alunoRoutes from './lib/Aluno/routes/alunoRoutes.js';
 import { env } from './lib/config/env.js';
 //import logger from './lib/logger.js';
+
 class Server {
   public app: Express;
 
@@ -33,6 +35,7 @@ class Server {
 
   private routes(): void {
     this.app.use('/chat', chatRoutes);
+    this.app.use('/chat-professor', chatProfessorRoutes);
     this.app.use('/aula', aulaRoutes);
     this.app.use('/professor', professorRoutes);
     this.app.use('/aluno', alunoRoutes);
