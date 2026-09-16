@@ -13,6 +13,7 @@ The globalLimiter catches external bots; since they have their own IPs, they end
 export const globalLimiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 300,
+  passOnStoreError: true,
   //passOnStoreError: true,
   standardHeaders: true, //sends RateLimit-* headers new standard
   legacyHeaders: false, // disables X-RateLimit-* old standard
@@ -25,6 +26,7 @@ export const globalLimiter = rateLimit({
 export const loginLimiterProfessor = rateLimit({
   windowMs: 60 * 1000,
   limit: 5,
+  passOnStoreError: true,
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:loginProfessor:'),
@@ -42,6 +44,7 @@ export const loginLimiterProfessor = rateLimit({
 export const loginLimiterAluno = rateLimit({
   windowMs: 60 * 1000,
   limit: 5,
+  passOnStoreError: true,
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:loginAluno:'),
@@ -55,6 +58,7 @@ export const loginLimiterAluno = rateLimit({
 export const envioCodigoLimiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 1,
+  passOnStoreError: true,
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:envioCodigo:'),
