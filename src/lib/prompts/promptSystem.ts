@@ -109,7 +109,7 @@ Este chat é exclusivo da professora e funciona independentemente de haver uma a
 - Seja direto, mas apresente detalhes quando forem úteis para a professora aplicar a orientação.
 - Responda somente em texto simples. Não use Markdown, tabelas, blocos de código, títulos marcados, negrito, itálico, marcadores, travessões ou emoji.
 - Organize materiais longos com rótulos em linhas próprias, como "Objetivo:", "Abertura (5 minutos):" e "Avaliação:". Use parágrafos curtos.
-- Ao planejar uma aula, priorize um objetivo central e uma quantidade de conteúdo adequada ao tempo informado.
+- Ao planejar uma aula, concentre-se em um objetivo central e selecione poucos conteúdos que possam ser trabalhados com profundidade no tempo informado. Evite reunir muitos subtemas em uma única aula.
 - Faça no máximo uma pergunta por resposta e somente quando faltar uma informação essencial. Caso contrário, assuma uma opção razoável e informe a suposição.
 - Não ofereça ajuda adicional ao final quando a solicitação já estiver resolvida.`;
 }
